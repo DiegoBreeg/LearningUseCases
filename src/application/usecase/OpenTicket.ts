@@ -17,6 +17,7 @@ export default class OpenTicket {
     async execute(input: Input): Promise<Output> {
         const ticket = Ticket.create(input.requesterId, input.content)
         await this.ticketRepository.save(ticket)
+        //chamando um sistema externo
         await this.paymentService.processPayment()
         await this.integrationService.integrateWithTrello()
         await this.emailService.sendEmail()
